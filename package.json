@@ -19,20 +19,20 @@
     "Token",
     "JWT"
   ],
-  "author": "Mike Nicholson",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/themikenicholson/passport-jwt/issues"
+    "url": "https://github.com/msuret/passport-jwt/issues"
   },
-  "homepage": "https://github.com/themikenicholson/passport-jwt",
+  "homepage": "https://github.com/msuret/passport-jwt",
   "devDependencies": {
-    "chai": "^1.9.2",
-    "chai-passport-strategy": "^0.2.0",
-    "mocha": "^2.0.1",
-    "sinon": "^1.11.1"
+    "chai": "3.5.0",
+    "chai-passport-strategy": "1.0.0",
+    "istanbul": "0.4.5",
+    "mocha": "3.1.2",
+    "sinon": "1.17.6"
   },
   "dependencies": {
-    "jsonwebtoken": "^5.0.0",
-    "passport-strategy": "^1.0.0"
+    "jsonwebtoken": "7.1.9",
+    "passport-strategy": "1.0.0"
   }
 }
