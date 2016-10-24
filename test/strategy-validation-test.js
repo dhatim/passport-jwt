@@ -22,7 +22,7 @@ describe('Strategy', function() {
             strategy = new Strategy(options, verifyStub);
 
             Strategy.JwtVerifier = sinon.stub();
-            Strategy.JwtVerifier.callsArgWith(3, null, test_data.valid_jwt.payload);
+            Strategy.JwtVerifier.callsArgWith(4, null, test_data.valid_jwt.payload);
 
             chai.passport.use(strategy)
                 .success(function(u, i) {
@@ -34,31 +34,35 @@ describe('Strategy', function() {
                 .authenticate();
         });
 
+        it('should call with the request as an argument', function() {
+            expect(Strategy.JwtVerifier.args[0][1]).to.be.an.object;
+            expect(Strategy.JwtVerifier.args[0][1].headers.authorization).to.equal("JWT " + test_data.valid_jwt.token);
+        });
 
         it('should call with the right secret as an argument', function() {
-            expect(Strategy.JwtVerifier.args[0][1]).to.equal('secret');
+            expect(Strategy.JwtVerifier.args[0][2]).to.equal('secret');
         });
 
 
         it('should call with the right issuer option', function() {
-            expect(Strategy.JwtVerifier.args[0][2]).to.be.an.object;
-            expect(Strategy.JwtVerifier.args[0][2].issuer).to.equal('TestIssuer');
+            expect(Strategy.JwtVerifier.args[0][3]).to.be.an.object;
+            expect(Strategy.JwtVerifier.args[0][3].issuer).to.equal('TestIssuer');
         });
 
 
         it('should call with the right audience option', function() {
-            expect(Strategy.JwtVerifier.args[0][2]).to.be.an.object;
-            expect(Strategy.JwtVerifier.args[0][2].audience).to.equal('TestAudience');
+            expect(Strategy.JwtVerifier.args[0][3]).to.be.an.object;
+            expect(Strategy.JwtVerifier.args[0][3].audience).to.equal('TestAudience');
         });
 
         it('should call with the right algorithms option', function() {
-            expect(Strategy.JwtVerifier.args[0][2]).to.be.an.object;
-            expect(Strategy.JwtVerifier.args[0][2].algorithms).to.eql(["HS256", "HS384"]);
+            expect(Strategy.JwtVerifier.args[0][3]).to.be.an.object;
+            expect(Strategy.JwtVerifier.args[0][3].algorithms).to.eql(["HS256", "HS384"]);
         });
 
         it('should call with the right ignoreExpiration option', function() {
-            expect(Strategy.JwtVerifier.args[0][2]).to.be.an.object;
-            expect(Strategy.JwtVerifier.args[0][2].ignoreExpiration).to.be.false;
+            expect(Strategy.JwtVerifier.args[0][3]).to.be.an.object;
+            expect(Strategy.JwtVerifier.args[0][3].ignoreExpiration).to.be.false;
         });
 
     });
@@ -75,7 +79,7 @@ describe('Strategy', function() {
 
             // Mock successful verification
             Strategy.JwtVerifier = sinon.stub();
-            Strategy.JwtVerifier.callsArgWith(3, null, test_data.valid_jwt.payload);
+            Strategy.JwtVerifier.callsArgWith(4, null, test_data.valid_jwt.payload);
 
             chai.passport.use(strategy)
                 .success(function(u, i) {
@@ -106,7 +110,7 @@ describe('Strategy', function() {
 
             // Mock errored verification
             Strategy.JwtVerifier = sinon.stub();
-            Strategy.JwtVerifier.callsArgWith(3, new Error("jwt expired"), false);
+            Strategy.JwtVerifier.callsArgWith(4, new Error("jwt expired"), false);
 
             chai.passport.use(strategy)
                 .fail(function(i) {
