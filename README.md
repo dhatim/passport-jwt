@@ -6,6 +6,19 @@ A [Passport](http://passportjs.org/) strategy for authenticating with a
 This module lets you authenticate endpoints using a JSON web token. It is
 intended to be used to secure RESTful endpoints without sessions.
 
+## Why this fork?
+This repo is a fork of a fork of the [original passport-jwt repository](https://github.com/themikenicholson/passport-jwt)
+
+This forks makes it work with Node 6 and adds the ability to make the `secretOrKey` option be a function.
+
+The `secretOrKey` function you specify should now look like this:
+
+```
+var jwtOptions = {
+	secretOrKey: function (jwtPayload, req, callback) { ... }
+};
+```
+
 ## Install
 
     npm install passport-jwt
@@ -21,9 +34,13 @@ The JWT authentication strategy is constructed as follows:
 `options` is an object literal containing options to control how the token is
 extracted from the request or verified.
 
-* `secretOrKey` is a REQUIRED string or buffer containing the secret
-  (symmetric) or PEM-encoded public key (asymmetric) for verifying the token's
-  signature.
+* `secretOrKey` is a REQUIRED string or buffer (or a function that calls back with
+   a string or buffer) containing the secret (symmetric) or PEM-encoded public key
+  (asymmetric) for verifying the token's signature, or a function.
+   If the key is dependent on the request (e.g. for multi-tenanted applications),
+   you can provide a function take takes the jwt payload, the incoming request,
+   and a callback. The callback is of the form `done(err, secret)` where `err`
+   will be `null` if there is no error.
 
 * `jwtFromRequest` (REQUIRED) Function that accepts a request as the only
   parameter and returns either the JWT as a string or *null*. See 
